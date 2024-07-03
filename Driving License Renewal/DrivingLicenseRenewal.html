@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Driving License Renewal</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
+</head>
+<body>
+  <div>
+    <h1 class="title">DRIVING LICENSE RENEWaL</h1>
+    <div class="question-screen">
+      <h3>Issue</h3>
+      <select class="select-issues" onchange="updateProgressBar()">
+        <option>Choose Issues</option>
+        <option value="option1">Sales</option>
+        <option value="option2">Document Pickup</option>
+        <option value="option3">Document Dispatch</option>
+        <option value="option4">Document Return</option>
+        <option value="option5">Payment</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="maindiv" style="display:none;">
+    <h1 align="center">Driving License Renewal</h1>
+    <div class="smalldiv">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <h2>Let's get Started!</h2>
+      <p>Add your details (As per your registered records)</p>
+      <div class="question-screen active">
+        <h3>Name</h3>
+        <input type="text" class="text-input" placeholder="Enter Name" onchange="updateProgressBar()">
+      </div>
+      <div class="question-screen">
+        <h3>Nature Of Driving License</h3>
+        <div class="custom-select">
+          <label><input type="radio" name="nature" class="radio-button" value="Private" onchange="updateProgressBar()"> Private</label>
+          <label><input type="radio" name="nature" class="radio-button" value="Commercial" onchange="updateProgressBar()">Commercial</label>  
+        </div>
+      </div>
+      <div class="question-screen">
+        <h3>Type of Previous Driving License</h3>
+        <div class="custom-select">
+          <label><input type="radio" name="prev-license" class="radio-button" value="Paper" onchange="updateProgressBar()"> Paper Driving License</label>
+          <label><input type="radio" name="prev-license" class="radio-button" value="Smart" onchange="updateProgressBar()"> Smart Driving License</label>
+        </div>
+      </div>
+      <div class="btn">
+        <button onclick="showMaindiv1()">Next ></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="maindiv1" style="display:none;">
+    <h1 align="center">Driving License Renewal</h1>
+    <div class="smalldiv1">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar1"></div>
+      </div>
+      <h2>Let's get Started!</h2>
+      <p>Add your details (As per your registered records)</p> 
+      <div class="question-screen">
+        <h3>Place where Driving License was issued</h3>
+        <input type="text" class="text-input" placeholder="Enter place Name" onchange="updateProgressBar()">
+      </div>
+      <div class="question-screen">
+        <h3>Issued Year of License</h3>
+        <select class="select-box" onchange="updateProgressBar()">
+          <option>Choose Issued Year of License</option>
+          <option value="2001">2001</option>
+          <option value="2008">2008</option>
+          <option value="2015">2015</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2004">2004</option>
+        </select> 
+      </div>
+      <div class="question-screen">
+        <h3>Expired Year of Previous Driving License</h3>
+        <select class="select-box" onchange="updateProgressBar()">
+          <option>Choose Expired Year of License</option>
+          <option value="2001">2001</option>
+          <option value="2008">2008</option>
+          <option value="2015">2015</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2004">2004</option>
+        </select>
+      </div>
+      <div class="btn">
+        <button onclick="goBack()">Back</button>
+        <button onclick="submitForm()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var progressMap = {
+      '.select-issues': 5,
+      '.text-input': 15,
+      '[name="nature"]': 15,
+      '[name="prev-license"]': 15,
+      '.maindiv1 .text-input': 15,
+      '.maindiv1 .select-box': 15
+    };
+
+    function updateProgressBar() {
+      var progress = 0;
+      for (var selector in progressMap) {
+        var elements = document.querySelectorAll(selector);
+        elements.forEach(function(element) {
+          if (element.value || element.checked) {
+            progress += progressMap[selector];
+          }
+        });
+      }
+
+      if (progress > 50) {
+        document.getElementById('progress-bar1').style.width = (progress - 50) + '%';
+      } else {
+        document.getElementById('progress-bar').style.width = progress + '%';
+      }
+
+      var selectIssues = document.querySelector('.select-issues');
+      if (selectIssues.value !== 'Choose Issues') {
+        document.querySelector('.maindiv').style.display = 'block';
+         document.getElementById('progress-bar').style.width = '5%';
+        updateProgressBar();
+      }
+    }
+
+    function goBack() {
+      document.querySelector('.maindiv1').style.display = 'none';
+      document.querySelector('.maindiv').style.display = 'block';
+       document.getElementById('progress-bar').style.width = '50%';
+      updateProgressBar();
+    }
+
+    function showMaindiv1() {
+      document.querySelector('.maindiv').style.display = 'none';
+      document.querySelector('.maindiv1').style.display = 'block';
+      document.getElementById('progress-bar1').style.width = '50%';
+      updateProgressBar();
+    }
+
+    function submitForm() {
+      alert("Form successfully submitted!");
+
+      
+      document.querySelector('.maindiv1').style.display = 'none';
+      document.querySelector('.maindiv').style.display = 'none';
+      document.querySelector('.select-issues').value = 'Choose Issues';
+      var inputs = document.querySelectorAll('.text-input, .radio-button, .select-box');
+      inputs.forEach(function(input) {
+        input.value = '';
+        input.checked = false;
+      });
+      updateProgressBar();
+    }
+  </script>
+</body>
+</html>
